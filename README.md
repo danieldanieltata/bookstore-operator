@@ -1,6 +1,6 @@
 # bookstore-operator
 
-Kubernetes operator for managing BookStores and Books (CRDs). BookStores get a namespace each. Books live in a store’s namespace and can optionally be created as a copy of another book.
+Kubernetes operator for managing BookStores and Books (CRDs). BookStores get a namespace each. Books live in a stores namespace and can optionally be created as a copy of another book.
 
 ## Key design decisions
 
@@ -12,6 +12,12 @@ Two controllers (Bookstore and Book) drive the flow. The diagram below summarize
 **Explicit cleanup (delete Bookstore).** A finalizer blocks deletion. The Bookstore controller: 
 (1) lists Books in that stores namespace and deletes each one 
 (2) lists Books in all namespaces and deletes any where `spec.copyOf.namespace` is the store being removed (copies that came from this store). Only after the finalizer is removed does the garbage collector delete the Namespace, because of the ownerRef set at creation.
+
+- **Delete in finalizer, not ownerRef for in-namespace Books.** With owner references, in-namespace Books would be garbage-collected when the Bookstore is removed. With a finalizer-only approach, we explicitly list and delete them. For a normal number of Books thats negligible and keeps the design consistent (one cleanup path).
+
+- **Reconcile trigger (watch) vs updating original in copys reconciliation.** The copys reconciliation updates the original `referenceCount`. the watch is what triggers reconcile. Thats a separation of concerns but it means two places can update the original (reconcile of original, reconcile of copy). Worth being aware of.
+
+**Edge case:** If the original Book is deleted and a copy still has `spec.copyOf` pointing at it, the copy is left with a dangling reference. Not handled specially today.
 
 ## Prerequisites
 
@@ -52,7 +58,7 @@ I run it locally against whatever cluster my kubeconfig points at.
 
 ### Samples I use for testing
 
-Apply in this order (jerusalem’s book has a `copyOf` pointing at tel-aviv, so tel-aviv has to exist first):
+Apply in this order (jerusalems book has a `copyOf` pointing at tel-aviv, so tel-aviv has to exist first):
 
 1. **Tel-aviv** (store then book):
 
@@ -76,6 +82,11 @@ Delete the sample resources, then remove the CRDs:
 kubectl delete -f config/samples/v1_book_jerusalem.yaml -f config/samples/v1_bookstore_jerusalem.yaml \
   -f config/samples/v1_book_tel_aviv.yaml -f config/samples/v1_bookstore_tel_aviv.yaml
 ```
+
+## Open questions
+
+- **Certs path:** Why does the webhook need that path the way its set up? (Documented how to generate and pass it. the “why” could be clearer.)
+- **Reference validation:** The `copyOf` reference validation works in tests but not in practice (e.g. when applying with kubectl). Havent figured out why yet.
 
 ---
 
