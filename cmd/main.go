@@ -37,6 +37,7 @@ import (
 
 	bookstoreexamplecomv1 "github.com/danieldanieltata/bookstore-operator/api/v1"
 	"github.com/danieldanieltata/bookstore-operator/internal/controller"
+	webhookv1 "github.com/danieldanieltata/bookstore-operator/internal/webhook/v1"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -191,6 +192,13 @@ func main() {
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Book")
 		os.Exit(1)
+	}
+	// nolint:goconst
+	if os.Getenv("ENABLE_WEBHOOKS") != "false" {
+		if err := webhookv1.SetupBookWebhookWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create webhook", "webhook", "Book")
+			os.Exit(1)
+		}
 	}
 	// +kubebuilder:scaffold:builder
 
