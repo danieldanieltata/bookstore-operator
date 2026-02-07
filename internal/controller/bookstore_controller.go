@@ -134,7 +134,7 @@ func (r *BookStoreReconciler) deleteBooksForBookStore(ctx context.Context, books
 	log := logf.FromContext(ctx)
 
 	// bookstore namespace is the same as the bookstore name, i wasn't sure if we wanted to put the bookstore in the created namespace or not.
-	bookstoreNS := bookstore.ObjectMeta.Name
+	bookstoreNS := bookstore.Name
 
 	var inNSList bookstoreexamplecomv1.BookList
 	if err := r.List(ctx, &inNSList, client.InNamespace(bookstoreNS)); err != nil {
