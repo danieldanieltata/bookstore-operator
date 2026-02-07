@@ -73,7 +73,7 @@ func TestValidateCreate_RejectsSelfReference(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error for self-reference")
 	}
-	if msg := err.Error(); msg != "Book cannot reference itself in spec.copyOf" {
+	if msg := err.Error(); msg != "book cannot reference itself in spec.copyOf" {
 		t.Errorf("unexpected error: %s", msg)
 	}
 }
