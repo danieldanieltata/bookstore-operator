@@ -1,6 +1,6 @@
 # bookstore-operator
 
-Kubernetes operator for managing BookStores and Books (CRDs). BookStores get a namespace each; Books live in a store’s namespace and can optionally be created as a copy of another book.
+Kubernetes operator for managing BookStores and Books (CRDs). BookStores get a namespace each. Books live in a store’s namespace and can optionally be created as a copy of another book.
 
 ## Key design decisions
 
@@ -46,7 +46,7 @@ I run it locally against whatever cluster my kubeconfig points at.
     make run WEBHOOK_CERT_PATH=/tmp/webhook-certs
    ```
 
-   The Makefile passes `WEBHOOK_CERT_PATH` into `--webhook-cert-path`; the manager expects `tls.crt` and `tls.key` in that directory. Leave it running in a terminal.
+   The Makefile passes `WEBHOOK_CERT_PATH` into `--webhook-cert-path`. the manager expects `tls.crt` and `tls.key` in that directory. Leave it running in a terminal.
 
 3. **Apply samples** (see below for the order).
 
@@ -85,7 +85,7 @@ Run `make help` for other targets. More in the [Kubebuilder docs](https://book.k
 
 Copyright 2026.
 
-Licensed under the Apache License, Version 2.0 (the "License");
+Licensed under the Apache License, Version 2.0 (the "License").
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
