@@ -132,10 +132,10 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
-              copyCount:
+              referenceCount:
                 type: integer
             required:
-            - copyCount
+            - referenceCount
             type: object
         required:
         - spec

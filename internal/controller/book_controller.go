@@ -75,26 +75,26 @@ func (r *BookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 	if book.Spec.CopyOf == nil {
 		log.Info("Book is original book, counting copies")
 
-		copyCount := 0
+		referenceCount := 0
 		for _, otherBook := range allBooks.Items {
 			if otherBook.Spec.CopyOf == nil {
 				continue
 			}
 			if otherBook.Spec.CopyOf.Namespace == book.Namespace && otherBook.Spec.CopyOf.Name == book.Name {
-				copyCount++
+				referenceCount++
 			}
 		}
 
-		log.Info("Counting copies for original book", "book", book.Name, "copyCount", copyCount)
+		log.Info("Counting copies for original book", "book", book.Name, "referenceCount", referenceCount)
 
-		if book.Status.CopyCount != copyCount {
-			book.Status.CopyCount = copyCount
+		if book.Status.ReferenceCount != referenceCount {
+			book.Status.ReferenceCount = referenceCount
 			err = r.Status().Update(ctx, book)
 			if err != nil {
 				return ctrl.Result{}, err
 			}
 
-			log.Info("CopyCount updated", "book", book.Name, "copyCount", copyCount)
+			log.Info("ReferenceCount updated", "book", book.Name, "referenceCount", referenceCount)
 		}
 	}
 

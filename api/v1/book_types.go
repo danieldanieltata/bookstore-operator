@@ -65,8 +65,8 @@ type BookStatus struct {
 	// +optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
-	// +kubebuilder:printcolumn:name="Copy Count",type=integer,JSONPath=`.status.copyCount`
-	CopyCount int `json:"copyCount"`
+	// +kubebuilder:printcolumn:name="Reference Count",type=integer,JSONPath=`.status.referenceCount`
+	ReferenceCount int `json:"referenceCount"`
 }
 
 // +kubebuilder:object:root=true
