@@ -2,6 +2,14 @@
 
 Kubernetes operator for managing BookStores and Books (CRDs). BookStores get a namespace each; Books live in a store’s namespace and can optionally be created as a copy of another book.
 
+## Key design decisions
+
+Two controllers (Bookstore and Book) drive the flow. The diagram below summarizes it.
+
+**Creation.** Create a Bookstore → Bookstore controller creates a Namespace with an ownerRef to the Bookstore (so the garbage collector can delete the namespace later). Create an original Book → Book controller sets its `status.referenceCount = 0`. Create a Book with `spec.copyOf` pointing at that original → Book controller fetches the original, bumps its `referenceCount`, and updates the copy's status (title, price, genre) from the original.
+
+**Explicit cleanup (delete Bookstore).** A finalizer blocks deletion. The Bookstore controller: (1) lists Books in that stores namespace and deletes each one; (2) lists Books in all namespaces and deletes any where `spec.copyOf.namespace` is the store being removed (copies that came from this store). Only after the finalizer is removed does the garbage collector delete the Namespace, because of the ownerRef set at creation.
+
 ## Prerequisites
 
 - Go 1.24+
