@@ -31,7 +31,7 @@ type BookSpec struct {
 	// More info: https://book.kubebuilder.io/reference/markers/crd-validation.html
 
 	Title string `json:"title"`
-	Price int    `json:"price"`
+	Price string `json:"price"`
 	Genre string `json:"genre"`
 
 	// +optional

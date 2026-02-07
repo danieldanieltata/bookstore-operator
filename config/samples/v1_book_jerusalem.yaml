@@ -5,7 +5,7 @@ metadata:
   namespace: jerusalem-books
 spec:
   title: The Lord of the Rings
-  price: 10
+  price: "10"
   genre: Fantasy
   copyOf:
     namespace: tel-aviv-books

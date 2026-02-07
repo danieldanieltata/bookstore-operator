@@ -52,7 +52,7 @@ spec:
               genre:
                 type: string
               price:
-                type: integer
+                type: string
               title:
                 type: string
             required:

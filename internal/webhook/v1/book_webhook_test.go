@@ -37,7 +37,7 @@ func TestValidateCreate_RejectsMissingRequiredFields(t *testing.T) {
 	v := BookCustomValidator{}
 	obj := &bookstoreexamplecomv1.Book{}
 	obj.Spec.Title = ""
-	obj.Spec.Price = 0
+	obj.Spec.Price = ""
 	obj.Spec.Genre = ""
 
 	_, err := v.ValidateCreate(context.Background(), obj)
@@ -53,7 +53,7 @@ func TestValidateCreate_AllowsValidBook(t *testing.T) {
 	v := BookCustomValidator{}
 	obj := &bookstoreexamplecomv1.Book{}
 	obj.Spec.Title = "The Book"
-	obj.Spec.Price = 10
+	obj.Spec.Price = "10"
 	obj.Spec.Genre = "Fiction"
 
 	_, err := v.ValidateCreate(context.Background(), obj)
@@ -81,12 +81,12 @@ func TestValidateCreate_RejectsSelfReference(t *testing.T) {
 func TestValidateCreate_CopyOfScenarios(t *testing.T) {
 	original := &bookstoreexamplecomv1.Book{
 		ObjectMeta: metav1.ObjectMeta{Namespace: "default", Name: "original"},
-		Spec:       bookstoreexamplecomv1.BookSpec{Title: "Orig", Price: 1, Genre: "X"},
+		Spec:       bookstoreexamplecomv1.BookSpec{Title: "Orig", Price: "1", Genre: "X"},
 	}
 	copyBook := &bookstoreexamplecomv1.Book{
 		ObjectMeta: metav1.ObjectMeta{Namespace: "default", Name: "copy"},
 		Spec: bookstoreexamplecomv1.BookSpec{
-			Title: "Copy", Price: 2, Genre: "Y",
+			Title: "Copy", Price: "2", Genre: "Y",
 			CopyOf: &bookstoreexamplecomv1.CopyOf{Namespace: "default", Name: "original"},
 		},
 	}
@@ -163,11 +163,11 @@ func TestValidateUpdate_RejectsMissingRequiredFields(t *testing.T) {
 	v := BookCustomValidator{}
 	oldObj := &bookstoreexamplecomv1.Book{}
 	oldObj.Spec.Title = "Old"
-	oldObj.Spec.Price = 5
+	oldObj.Spec.Price = "5"
 	oldObj.Spec.Genre = "Drama"
 	newObj := &bookstoreexamplecomv1.Book{}
 	newObj.Spec.Title = ""
-	newObj.Spec.Price = 0
+	newObj.Spec.Price = ""
 	newObj.Spec.Genre = ""
 
 	_, err := v.ValidateUpdate(context.Background(), oldObj, newObj)

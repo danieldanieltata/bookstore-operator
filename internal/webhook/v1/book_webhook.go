@@ -108,14 +108,14 @@ func hasAtLeastOneOverride(spec *bookstoreexamplecomv1.BookSpec) bool {
 	if spec.CopyOf == nil {
 		return true
 	}
-	return spec.Title != "" || spec.Price != 0 || spec.Genre != ""
+	return spec.Title != "" || spec.Price != "" || spec.Genre != ""
 }
 
 func hasRequiredFieldsWhenNotCopy(spec *bookstoreexamplecomv1.BookSpec) bool {
 	if spec.CopyOf != nil {
 		return true
 	}
-	return spec.Title != "" && spec.Price != 0 && spec.Genre != ""
+	return spec.Title != "" && spec.Price != "" && spec.Genre != ""
 }
 
 func (v *BookCustomValidator) validateCopyOfReference(ctx context.Context, obj *bookstoreexamplecomv1.Book) error {
