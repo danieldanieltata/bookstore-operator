@@ -15,7 +15,7 @@ Two controllers (Bookstore and Book) drive the flow. The diagram below summarize
 
 **Delete in finalizer, not ownerRef for in-namespace Books.** With owner references, in-namespace Books would be garbage-collected when the Bookstore is removed. With a finalizer-only approach, we explicitly list and delete them. For a normal number of Books thats negligible and keeps the design consistent (one cleanup path).
 
-**Reconcile trigger (watch) vs updating original in copy’s reconciliation.** We could either have the copies reconcile loop update the original’s `referenceCount`, or add a watch so that when a Book with `spec.copyOf` changes, we trigger a reconcile on the *original* book. I went with the watcher so the original’s reconcile is the single place that updates `referenceCount`—cleaner and consistent.  
+**Reconcile trigger (watch) vs updating original in copy’s reconciliation.** We could either have the copies reconcile loop update the original `referenceCount`, or add a watch so that when a Book with `spec.copyOf` changes, we trigger a reconcile on the *original* book. I went with the watcher so the originals reconcile is the single place that updates `referenceCount` to keep things cleaner and consistent.  
 
 **Edge case:** If the original Book is deleted and a copy still has `spec.copyOf` pointing at it, the copy is left with a dangling reference. Not handled specially today.
 
