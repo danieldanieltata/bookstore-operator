@@ -128,7 +128,7 @@ func (v *BookCustomValidator) validateCopyOfReference(ctx context.Context, obj *
 		"copyOf.namespace", copyOf.Namespace, "copyOf.name", copyOf.Name)
 
 	if obj.GetNamespace() == copyOf.Namespace && obj.GetName() == copyOf.Name {
-		return fmt.Errorf("Book cannot reference itself in spec.copyOf")
+		return fmt.Errorf("book cannot reference itself in spec.copyOf")
 	}
 	ref := bookstoreexamplecomv1.Book{}
 	err := v.Reader.Get(ctx, types.NamespacedName{Namespace: copyOf.Namespace, Name: copyOf.Name}, &ref)
