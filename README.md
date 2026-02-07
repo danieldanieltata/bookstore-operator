@@ -83,6 +83,10 @@ kubectl delete -f config/samples/v1_book_jerusalem.yaml -f config/samples/v1_boo
   -f config/samples/v1_book_tel_aviv.yaml -f config/samples/v1_bookstore_tel_aviv.yaml
 ```
 
+## Missing things
+- Unit/Integration tests are not finished ;) 
+
+
 ## Open questions
 
 - **Certs path:** Im not sure why I've needed to add the usage of ENV inside the make file, hopefully there is another way
