@@ -90,11 +90,8 @@ kubectl delete -f config/samples/v1_book_jerusalem.yaml -f config/samples/v1_boo
 ## Open questions
 
 - **Certs path:** Im not sure why I've needed to add the usage of ENV inside the make file, hopefully there is another way
-- **Reference validation:** The `copyOf` reference validation works in tests but not in practice (e.g. when applying with kubectl). Havent figured out why yet.
+- **Reference validation:** The `copyOf` reference validation works in tests but not in practice (e.g. when applying with kubectl). Haven't figured out why yet.
 
----
-
-Run `make help` for other targets. More in the [Kubebuilder docs](https://book.kubebuilder.io/introduction.html).
 
 ## License
 
