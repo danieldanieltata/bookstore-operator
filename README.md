@@ -74,15 +74,6 @@ Apply in this order (jerusalems book has a `copyOf` pointing at tel-aviv, so tel
    kubectl apply -f config/samples/v1_book_jerusalem.yaml
    ```
 
-### Cleanup
-
-Delete the sample resources, then remove the CRDs:
-
-```sh
-kubectl delete -f config/samples/v1_book_jerusalem.yaml -f config/samples/v1_bookstore_jerusalem.yaml \
-  -f config/samples/v1_book_tel_aviv.yaml -f config/samples/v1_bookstore_tel_aviv.yaml
-```
-
 ## Missing things
 
 - Unit/Integration tests are not finished ;)
