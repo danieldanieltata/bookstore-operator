@@ -5,7 +5,7 @@ Kubernetes operator for managing BookStores and Books (CRDs). BookStores get a n
 ## Key design decisions
 
 Two controllers (Bookstore and Book) drive the flow. The diagram below summarizes it.
-<img width="1082" height="1034" alt="image" src="https://github.com/user-attachments/assets/254a4f85-89a5-411f-b434-21e29057e68a" />
+<img width="1157" height="1040" alt="image" src="https://github.com/user-attachments/assets/ce4cdf43-e2e7-4ca1-9f62-24ad79c1b35c" />
 
 **Creation.** Create a Bookstore → Bookstore controller creates a Namespace with an ownerRef to the Bookstore (so the garbage collector can delete the namespace later). Create an original Book → Book controller sets its `status.referenceCount = 0`. Create a Book with `spec.copyOf` pointing at that original → Book controller fetches the original, bumps its `referenceCount`, and updates the copy's status (title, price, genre) from the original.
 
