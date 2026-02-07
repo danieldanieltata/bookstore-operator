@@ -56,7 +56,7 @@ func (r *BookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 	log.Info("Reconciling Book", "request", req)
 
 	book := &bookstoreexamplecomv1.Book{}
-	err := r.Client.Get(ctx, types.NamespacedName{Name: req.Name, Namespace: req.Namespace}, book)
+	err := r.Get(ctx, types.NamespacedName{Name: req.Name, Namespace: req.Namespace}, book)
 
 	if err != nil && errors.IsNotFound(err) {
 		log.Info("Book not found, skipping reconciliation")
@@ -68,7 +68,7 @@ func (r *BookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 	log.Info("Book found", "book", book.Name, "namespace", book.Namespace)
 
 	var allBooks bookstoreexamplecomv1.BookList
-	if err := r.Client.List(ctx, &allBooks); err != nil {
+	if err := r.List(ctx, &allBooks); err != nil {
 		return ctrl.Result{}, err
 	}
 
@@ -89,7 +89,7 @@ func (r *BookReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 
 		if book.Status.CopyCount != copyCount {
 			book.Status.CopyCount = copyCount
-			err = r.Client.Status().Update(ctx, book)
+			err = r.Status().Update(ctx, book)
 			if err != nil {
 				return ctrl.Result{}, err
 			}

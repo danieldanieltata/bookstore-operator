@@ -56,7 +56,7 @@ func (r *BookStoreReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 
 	log.Info("Reconciling BookStore", "request", req)
 
-	//Create namespace with the name of the BookStore if not exists
+	// Create namespace with the name of the BookStore if not exists
 	namespace := &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: req.Name,
@@ -64,9 +64,9 @@ func (r *BookStoreReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	}
 
 	foundNamespace := &corev1.Namespace{}
-	err := r.Client.Get(ctx, types.NamespacedName{Name: req.Name}, foundNamespace)
+	err := r.Get(ctx, types.NamespacedName{Name: req.Name}, foundNamespace)
 	if err != nil && errors.IsNotFound(err) {
-		err = r.Client.Create(ctx, namespace)
+		err = r.Create(ctx, namespace)
 
 		if err != nil {
 			return ctrl.Result{}, err
