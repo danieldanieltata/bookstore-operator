@@ -13,9 +13,9 @@ Two controllers (Bookstore and Book) drive the flow. The diagram below summarize
 (1) lists Books in that stores namespace and deletes each one 
 (2) lists Books in all namespaces and deletes any where `spec.copyOf.namespace` is the store being removed (copies that came from this store). Only after the finalizer is removed does the garbage collector delete the Namespace, because of the ownerRef set at creation.
 
-- **Delete in finalizer, not ownerRef for in-namespace Books.** With owner references, in-namespace Books would be garbage-collected when the Bookstore is removed. With a finalizer-only approach, we explicitly list and delete them. For a normal number of Books thats negligible and keeps the design consistent (one cleanup path).
+**Delete in finalizer, not ownerRef for in-namespace Books.** With owner references, in-namespace Books would be garbage-collected when the Bookstore is removed. With a finalizer-only approach, we explicitly list and delete them. For a normal number of Books thats negligible and keeps the design consistent (one cleanup path).
 
-- **Reconcile trigger (watch) vs updating original in copys reconciliation.** The copys reconciliation updates the original `referenceCount`. the watch is what triggers reconcile. Thats a separation of concerns but it means two places can update the original (reconcile of original, reconcile of copy). Worth being aware of.
+**Reconcile trigger (watch) vs updating original in copy’s reconciliation.** We could either have the copies reconcile loop update the original’s `referenceCount`, or add a watch so that when a Book with `spec.copyOf` changes, we trigger a reconcile on the *original* book. I went with the watcher so the original’s reconcile is the single place that updates `referenceCount`—cleaner and consistent.  
 
 **Edge case:** If the original Book is deleted and a copy still has `spec.copyOf` pointing at it, the copy is left with a dangling reference. Not handled specially today.
 
@@ -85,7 +85,7 @@ kubectl delete -f config/samples/v1_book_jerusalem.yaml -f config/samples/v1_boo
 
 ## Open questions
 
-- **Certs path:** Why does the webhook need that path the way its set up? (Documented how to generate and pass it. the “why” could be clearer.)
+- **Certs path:** Im not sure why I've needed to add the usage of ENV inside the make file, hopefully there is another way
 - **Reference validation:** The `copyOf` reference validation works in tests but not in practice (e.g. when applying with kubectl). Havent figured out why yet.
 
 ---
