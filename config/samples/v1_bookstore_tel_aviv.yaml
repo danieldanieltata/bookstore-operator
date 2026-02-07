@@ -1,0 +1,8 @@
+apiVersion: bookstore.example.com/v1
+kind: BookStore
+metadata:
+  labels:
+    app.kubernetes.io/name: bookstore-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: tel-aviv-books
+spec: {}

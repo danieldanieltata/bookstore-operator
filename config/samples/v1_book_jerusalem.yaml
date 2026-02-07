@@ -1,0 +1,12 @@
+kind: Book
+apiVersion: bookstore.example.com/v1
+metadata:
+  name: the-lord-of-the-rings
+  namespace: jerusalem-books
+spec:
+  title: The Lord of the Rings
+  price: 10
+  genre: Fantasy
+  copyOf:
+    namespace: tel-aviv-books
+    name: the-lord-of-the-rings

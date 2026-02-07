@@ -1,0 +1,9 @@
+kind: Book
+apiVersion: bookstore.example.com/v1
+metadata:
+  name: the-lord-of-the-rings2
+  namespace: hadera-books
+spec:
+  title: The Lord of the Rings2
+  price: 20
+  genre: Fantasy
