@@ -145,7 +145,7 @@ func TestValidateCreate_CopyOfScenarios(t *testing.T) {
 
 	t.Run("allows copyOf with override", func(t *testing.T) {
 		c := fake.NewClientBuilder().WithScheme(testScheme()).WithObjects(original).Build()
-		v := BookCustomValidator{Reader: c}
+		v := BookCustomValidator{Client: c}
 		obj := &bookstoreexamplecomv1.Book{}
 		obj.SetNamespace("default")
 		obj.SetName("new")
