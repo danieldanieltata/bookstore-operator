@@ -37,7 +37,7 @@ var booklog = logf.Log.WithName("book-resource")
 // SetupBookWebhookWithManager registers the webhook for Book in the manager.
 func SetupBookWebhookWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewWebhookManagedBy(mgr, &bookstoreexamplecomv1.Book{}).
-		WithValidator(&BookCustomValidator{Client: mgr.GetClient(), Reader: mgr.GetAPIReader()}).
+		WithValidator(&BookCustomValidator{Client: mgr.GetClient()}).
 		Complete()
 }
 
@@ -54,7 +54,6 @@ func SetupBookWebhookWithManager(mgr ctrl.Manager) error {
 // as this struct is used only for temporary operations and does not need to be deeply copied.
 type BookCustomValidator struct {
 	Client client.Client
-	Reader client.Reader
 }
 
 // ValidateCreate implements webhook.CustomValidator so a webhook will be registered for the type Book.
@@ -131,7 +130,7 @@ func (v *BookCustomValidator) validateCopyOfReference(ctx context.Context, obj *
 		return fmt.Errorf("book cannot reference itself in spec.copyOf")
 	}
 	ref := bookstoreexamplecomv1.Book{}
-	err := v.Reader.Get(ctx, types.NamespacedName{Namespace: copyOf.Namespace, Name: copyOf.Name}, &ref)
+	err := v.Client.Get(ctx, types.NamespacedName{Namespace: copyOf.Namespace, Name: copyOf.Name}, &ref)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
 			return fmt.Errorf("spec.copyOf references non-existent Book")

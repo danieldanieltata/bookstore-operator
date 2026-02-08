@@ -93,7 +93,7 @@ func TestValidateCreate_CopyOfScenarios(t *testing.T) {
 
 	t.Run("rejects nonexistent reference", func(t *testing.T) {
 		c := fake.NewClientBuilder().WithScheme(testScheme()).Build()
-		v := BookCustomValidator{Reader: c}
+		v := BookCustomValidator{Client: c}
 		obj := &bookstoreexamplecomv1.Book{}
 		obj.SetNamespace("default")
 		obj.SetName("new")
@@ -110,7 +110,7 @@ func TestValidateCreate_CopyOfScenarios(t *testing.T) {
 
 	t.Run("rejects copy-of-copy", func(t *testing.T) {
 		c := fake.NewClientBuilder().WithScheme(testScheme()).WithObjects(original, copyBook).Build()
-		v := BookCustomValidator{Reader: c}
+		v := BookCustomValidator{Client: c}
 		obj := &bookstoreexamplecomv1.Book{}
 		obj.SetNamespace("default")
 		obj.SetName("new")
@@ -128,7 +128,7 @@ func TestValidateCreate_CopyOfScenarios(t *testing.T) {
 
 	t.Run("rejects copyOf without override", func(t *testing.T) {
 		c := fake.NewClientBuilder().WithScheme(testScheme()).WithObjects(original).Build()
-		v := BookCustomValidator{Reader: c}
+		v := BookCustomValidator{Client: c}
 		obj := &bookstoreexamplecomv1.Book{}
 		obj.SetNamespace("default")
 		obj.SetName("new")
